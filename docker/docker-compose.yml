@@ -7,6 +7,12 @@ services:
     ports:
       - 8081:8080
 
+  memcached:
+    image: memcached:1.6.12-bullseye
+    container_name: memcached
+    ports:
+      - 11211:11211
+
 #  db:
 #    image: mysql:5.7
 #    container_name: db

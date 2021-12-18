@@ -1,7 +1,7 @@
 package forex.domain
 
-import io.circe.Decoder
 import cats.syntax.either._
+import io.circe.{ Decoder, Encoder, Json }
 case class Bid(value: BigDecimal) extends AnyVal
 
 object Bid {
@@ -10,5 +10,8 @@ object Bid {
 
   implicit val bidDecoder: Decoder[Bid] =
     Decoder.decodeBigDecimal.emap(Bid(_).asRight[String])
+
+  implicit val bidEncoder: Encoder[Bid] =
+    Encoder.instance[Bid](p => Json.fromBigDecimal(p.value))
 
 }

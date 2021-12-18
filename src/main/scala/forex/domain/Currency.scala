@@ -1,7 +1,7 @@
 package forex.domain
 
 import cats.Show
-import io.circe.Decoder
+import io.circe.{ Decoder, Encoder, Json }
 import cats.syntax.either._
 
 sealed trait Currency
@@ -43,4 +43,8 @@ object Currency {
 
   implicit val currencyDecoder: Decoder[Currency] =
     Decoder.decodeString.emap(Currency.fromString(_).asRight[String])
+
+  implicit val currencyEncoder: Encoder[Currency] =
+    Encoder.instance[Currency] { show.show _ andThen Json.fromString }
+
 }

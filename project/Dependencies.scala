@@ -10,13 +10,13 @@ object Dependencies {
     val circe      = "0.13.0"
     val pureConfig = "0.14.1"
 
-    val kindProjector        = "0.10.3"
-    val logback              = "1.2.3"
-    val scalaCheck           = "1.15.3"
-    val scalaTest            = "3.2.7"
-    val catsScalaCheck       = "0.3.0"
-    val scalaCacheCatsEffect = "0.28.0"
-    val chimney              = "0.6.1"
+    val kindProjector  = "0.10.3"
+    val logback        = "1.2.3"
+    val scalaCheck     = "1.15.3"
+    val scalaTest      = "3.2.7"
+    val catsScalaCheck = "0.3.0"
+    val scalaCache     = "0.28.0"
+    val chimney        = "0.6.1"
   }
 
   object Libraries {
@@ -47,7 +47,9 @@ object Dependencies {
     lazy val scalaCheck     = "org.scalacheck"    %% "scalacheck"      % Versions.scalaCheck
     lazy val catsScalaCheck = "io.chrisdavenport" %% "cats-scalacheck" % Versions.catsScalaCheck
 
-    lazy val scalaCacheCatsEffect = "com.github.cb372" %% "scalacache-cats-effect" % Versions.scalaCacheCatsEffect
+    lazy val scalaCacheCatsEffect = "com.github.cb372" %% "scalacache-cats-effect" % Versions.scalaCache
+    lazy val scalaCacheMemcached  = "com.github.cb372" %% "scalacache-memcached"   % Versions.scalaCache
+    lazy val scalaCacheCirce      = "com.github.cb372" %% "scalacache-circe"       % Versions.scalaCache
     lazy val chimney              = "io.scalaland"     %% "chimney"                % Versions.chimney
 
   }
