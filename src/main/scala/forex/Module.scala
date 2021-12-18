@@ -1,17 +1,26 @@
 package forex
 
-import cats.effect.{ Concurrent, Timer }
+import cats.effect.{ Blocker, Concurrent, ContextShift, Timer }
 import forex.config.ApplicationConfig
 import forex.http.rates.RatesHttpRoutes
-import forex.services._
 import forex.programs._
+import forex.services._
 import org.http4s._
-import org.http4s.implicits._
+import org.http4s.client.{ Client, _ }
 import org.http4s.server.middleware.{ AutoSlash, Timeout }
+import org.http4s.syntax.all._
 
-class Module[F[_]: Concurrent: Timer](config: ApplicationConfig) {
+import scala.concurrent.ExecutionContext
 
-  private val ratesService: RatesService[F] = RatesServices.dummy[F]
+class Module[F[_]: Concurrent: Timer: ContextShift](config: ApplicationConfig, ec: ExecutionContext) {
+
+  import java.util.concurrent._
+
+  val blockingPool          = Executors.newFixedThreadPool(5)
+  val blocker               = Blocker.liftExecutionContext(ec)
+  val httpClient: Client[F] = JavaNetClientBuilder[F](blocker).create
+
+  private val ratesService: RatesService[F] = RatesServices.live[F](config.oneFrame, httpClient)
 
   private val ratesProgram: RatesProgram[F] = RatesProgram[F](ratesService)
 

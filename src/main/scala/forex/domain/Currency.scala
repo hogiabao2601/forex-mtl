@@ -1,6 +1,8 @@
 package forex.domain
 
 import cats.Show
+import io.circe.Decoder
+import cats.syntax.either._
 
 sealed trait Currency
 
@@ -39,4 +41,6 @@ object Currency {
     case "USD" => USD
   }
 
+  implicit val currencyDecoder: Decoder[Currency] =
+    Decoder.decodeString.emap(Currency.fromString(_).asRight[String])
 }
