@@ -6,6 +6,7 @@ import forex.http.rates.RatesHttpRoutes
 import forex.programs._
 import forex.services._
 import forex.services.caches.interpreters.MemcachedService
+import forex.services.keys.KeyBuilderOps
 import net.spy.memcached.{ AddrUtil, BinaryConnectionFactory, MemcachedClient }
 import org.http4s._
 import org.http4s.client.{ Client, _ }
@@ -29,7 +30,8 @@ class Module[F[_]: Concurrent: Timer: ContextShift](config: ApplicationConfig, e
 
   val cacheService = new MemcachedService(memcachedClient, config.cache)
 
-  private val ratesService: RatesService[F] = RatesServices.live[F](config.oneFrame, httpClient, cacheService)
+  private val ratesService: RatesService[F] =
+    RatesServices.live[F](config.oneFrame, httpClient, cacheService, KeyBuilderOps)
 
   private val ratesProgram: RatesProgram[F] = RatesProgram[F](ratesService)
 

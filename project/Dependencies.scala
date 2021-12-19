@@ -17,6 +17,7 @@ object Dependencies {
     val catsScalaCheck = "0.3.0"
     val scalaCache     = "0.28.0"
     val chimney        = "0.6.1"
+    val scalamock      = "5.1.0"
   }
 
   object Libraries {
@@ -46,6 +47,7 @@ object Dependencies {
     lazy val scalaTest      = "org.scalatest"     %% "scalatest"       % Versions.scalaTest
     lazy val scalaCheck     = "org.scalacheck"    %% "scalacheck"      % Versions.scalaCheck
     lazy val catsScalaCheck = "io.chrisdavenport" %% "cats-scalacheck" % Versions.catsScalaCheck
+    lazy val scalamock      = "org.scalamock"     %% "scalamock"       % Versions.scalamock //Apache License 2.0
 
     lazy val scalaCacheCatsEffect = "com.github.cb372" %% "scalacache-cats-effect" % Versions.scalaCache
     lazy val scalaCacheMemcached  = "com.github.cb372" %% "scalacache-memcached"   % Versions.scalaCache
