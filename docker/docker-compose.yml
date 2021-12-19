@@ -3,25 +3,36 @@ version: '3.1'
 services:
   oneframe:
     image: paidyinc/one-frame
+    hostname: oneframe
     container_name: one-frame
     ports:
       - 8081:8080
+    networks:
+      - default
 
   memcached:
     image: memcached:1.6.12-bullseye
+    hostname: memcached
     container_name: memcached
     ports:
       - 11211:11211
+    networks:
+      - default
 
-#  db:
-#    image: mysql:5.7
-#    container_name: db
-#    command: --default-authentication-plugin=mysql_native_password
-#    environment:
-#      MYSQL_ROOT_PASSWORD: root
+#  app:
+#    image: forex:1.0.1
+#    container_name: app
+#    depends_on:
+#      - "oneframe"
+#      - "memcached"
 #    ports:
-#      - 3306:3306
-#    volumes:
-#      - "./../sql/gladiator/ddl.sql:/docker-entrypoint-initdb.d/gladiator.sql"
-#      - "./../sql/trm/mysql/ddl/ddl.sql:/docker-entrypoint-initdb.d/trm.sql"
-#      - "./../sql/tm/mysql/ddl/ddl.sql:/docker-entrypoint-initdb.d/tm.sql"
+#      - 8080:8080
+#    links:
+#      - "memcached:memcached"
+#      - "oneframe:oneframe"
+#    networks:
+#      - default
+
+networks:
+  default:
+    driver: bridge

@@ -1,7 +1,6 @@
 package forex.config
 
 import scala.concurrent.duration.FiniteDuration
-
 case class ApplicationConfig(
     http: HttpConfig,
     oneFrame: OneFrameConfig,
@@ -22,5 +21,6 @@ case class OneFrameConfig(
 
 case class CacheConfig(
     url: String,
-    ttl: Int
+    ttl: Int,
+    enable: Boolean
 )

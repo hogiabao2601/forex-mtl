@@ -72,3 +72,14 @@ libraryDependencies ++= Seq(
   Libraries.scalaCheck     % Test,
   Libraries.catsScalaCheck % Test
 )
+
+enablePlugins(DockerPlugin)
+enablePlugins(JavaAppPackaging)
+
+Compile / mainClass := Some("forex.Main")
+
+Docker / packageName := "forex"
+
+dockerExposedPorts ++= Seq(8080)
+
+dockerBaseImage := "openjdk"

@@ -1,7 +1,6 @@
 package forex
 
 import cats.effect.{ Blocker, Concurrent, ContextShift, Timer }
-import cats.syntax.option._
 import forex.config.ApplicationConfig
 import forex.http.rates.RatesHttpRoutes
 import forex.programs._
@@ -14,7 +13,6 @@ import org.http4s.server.middleware.{ AutoSlash, Timeout }
 import org.http4s.syntax.all._
 
 import scala.concurrent.ExecutionContext
-import scala.concurrent.duration._
 
 class Module[F[_]: Concurrent: Timer: ContextShift](config: ApplicationConfig, ec: ExecutionContext) {
 
@@ -29,7 +27,7 @@ class Module[F[_]: Concurrent: Timer: ContextShift](config: ApplicationConfig, e
     AddrUtil.getAddresses(config.cache.url)
   )
 
-  val cacheService = new MemcachedService(memcachedClient, config.cache.ttl.seconds.some)
+  val cacheService = new MemcachedService(memcachedClient, config.cache)
 
   private val ratesService: RatesService[F] = RatesServices.live[F](config.oneFrame, httpClient, cacheService)
 
