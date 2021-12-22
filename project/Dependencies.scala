@@ -18,11 +18,17 @@ object Dependencies {
     val scalaCache     = "0.28.0"
     val chimney        = "0.6.1"
     val scalamock      = "5.1.0"
+    val log4Cats       = "1.1.1"
+    val enumeratum     = "1.7.0"
+    val fs2Cron        = "0.5.0"
   }
 
   object Libraries {
-    def circe(artifact: String): ModuleID  = "io.circe"   %% artifact % Versions.circe
-    def http4s(artifact: String): ModuleID = "org.http4s" %% artifact % Versions.http4s
+    def circe(artifact: String): ModuleID      = "io.circe"          %% artifact % Versions.circe
+    def http4s(artifact: String): ModuleID     = "org.http4s"        %% artifact % Versions.http4s
+    def log4Cats(artifact: String): ModuleID   = "io.chrisdavenport" %% artifact % Versions.log4Cats
+    def enumeratum(artifact: String): ModuleID = "com.beachape"      %% artifact % Versions.enumeratum
+    def fs2Cron(artifact: String): ModuleID    = "eu.timepit"        %% artifact % Versions.fs2Cron
 
     lazy val cats       = "org.typelevel" %% "cats-core"   % Versions.cats
     lazy val catsEffect = "org.typelevel" %% "cats-effect" % Versions.catsEffect
@@ -50,10 +56,15 @@ object Dependencies {
     lazy val scalamock      = "org.scalamock"     %% "scalamock"       % Versions.scalamock //Apache License 2.0
 
     lazy val scalaCacheCatsEffect = "com.github.cb372" %% "scalacache-cats-effect" % Versions.scalaCache
-    lazy val scalaCacheMemcached  = "com.github.cb372" %% "scalacache-memcached"   % Versions.scalaCache
-    lazy val scalaCacheCirce      = "com.github.cb372" %% "scalacache-circe"       % Versions.scalaCache
-    lazy val chimney              = "io.scalaland"     %% "chimney"                % Versions.chimney
-
+    lazy val scalaCacheMemcached  = "com.github.cb372" %% "scalacache-memcached" % Versions.scalaCache
+    lazy val scalaCacheRedis      = "com.github.cb372" %% "scalacache-redis" % Versions.scalaCache
+    lazy val scalaCacheCirce      = "com.github.cb372" %% "scalacache-circe" % Versions.scalaCache
+    lazy val chimney              = "io.scalaland" %% "chimney" % Versions.chimney
+    lazy val log4CatsCore         = log4Cats("log4cats-core")
+    lazy val log4CatsSlf4j        = log4Cats("log4cats-slf4j")
+    lazy val enumeratumCirce      = enumeratum("enumeratum-circe")
+    lazy val fs2CronCore          = fs2Cron("fs2-cron-core")
+    lazy val fs2CronCron4s        = fs2Cron("fs2-cron-cron4s")
   }
 
 }

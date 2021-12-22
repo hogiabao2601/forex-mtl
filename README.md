@@ -13,19 +13,19 @@ Please note the following drawback of the [One-Frame service](https://hub.docker
 ## Solution
 > For this problem I have added a cache service for the API call, then when we call one-frame server we will cache the response for each 5 mins, then we can resolve the issue with 1000 request per day. We can enable and disable the cache base on config app.cache.enable=true|false
 
+> I have added a scheduler job that will fetch all currency pairs for every 5 mins and store them in cache (memcached or redis), then the API will get values in cache instead of calling one-frame, then the number of API call will 288 times/day.
+> Fetching URI http://localhost:8081/rates?pair=AUDCAD&pair=AUDCHF&pair=AUDEUR&pair=AUDGBP&pair=AUDNZD&pair=AUDJPY&pair=AUDSGD&pair=AUDUSD&pair=CADAUD&pair=CADCHF&pair=CADEUR&pair=CADGBP&pair=CADNZD&pair=CADJPY&pair=CADSGD&pair=CADUSD&pair=CHFAUD&pair=CHFCAD&pair=CHFEUR&pair=CHFGBP&pair=CHFNZD&pair=CHFJPY&pair=CHFSGD&pair=CHFUSD&pair=EURAUD&pair=EURCAD&pair=EURCHF&pair=EURGBP&pair=EURNZD&pair=EURJPY&pair=EURSGD&pair=EURUSD&pair=GBPAUD&pair=GBPCAD&pair=GBPCHF&pair=GBPEUR&pair=GBPNZD&pair=GBPJPY&pair=GBPSGD&pair=GBPUSD&pair=NZDAUD&pair=NZDCAD&pair=NZDCHF&pair=NZDEUR&pair=NZDGBP&pair=NZDJPY&pair=NZDSGD&pair=NZDUSD&pair=JPYAUD&pair=JPYCAD&pair=JPYCHF&pair=JPYEUR&pair=JPYGBP&pair=JPYNZD&pair=JPYSGD&pair=JPYUSD&pair=SGDAUD&pair=SGDCAD&pair=SGDCHF&pair=SGDEUR&pair=SGDGBP&pair=SGDNZD&pair=SGDJPY&pair=SGDUSD&pair=USDAUD&pair=USDCAD&pair=USDCHF&pair=USDEUR&pair=USDGBP&pair=USDNZD&pair=USDJPY&pair=USDSGD
 
 ## Known Issue / Defect
- - For now,  I have not implemented the enum for currency yet. We can enhance the enum with [enumeratum](https://github.com/lloydmeta/enumeratum)
- - For better approach, we can implement a scheduler job for fetching all price for multiple currency pair from one-frame service, that will save a lot of bandwidth and number of time we call to the API.
  - I have not finished the error handling for the components, need to update that part.
  - The number of test cases are not covered all components of the project.
- - I have not finished the dockerization for the application. Have just finished the docker-compose for One-Frame and memcached
+ - I have not finished the dockerization for the application. Have just finished the docker-compose for One-Frame, memcached and redis
  - I have not finished the github action for CI-CD process
 
 ## How to run the project
 ### Run the application with docker containers
 ```shell
-docker-compose -f docker/docker-compose.yml up oneframe memcached -d
+docker-compose -f docker/docker-compose.yml up oneframe memcached redis -d
 sbt run
 ```
 ### Testing the API responses

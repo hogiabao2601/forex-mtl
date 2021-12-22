@@ -1,10 +1,13 @@
 package forex.config
 
+import forex.config.SchedulerConfig.TaskConfig
+
 import scala.concurrent.duration.FiniteDuration
 case class ApplicationConfig(
     http: HttpConfig,
     oneFrame: OneFrameConfig,
-    cache: CacheConfig
+    cache: CacheConfig,
+    scheduler: SchedulerConfig
 )
 
 case class HttpConfig(
@@ -22,5 +25,18 @@ case class OneFrameConfig(
 case class CacheConfig(
     url: String,
     ttl: Int,
+    host: String,
+    port: Int,
     enable: Boolean
 )
+
+case class SchedulerConfig(
+    oneFrameFetcher: TaskConfig[OneFrameFetcherConfig]
+)
+
+object SchedulerConfig {
+  case class TaskConfig[T](expr: String, config: T)
+  val namespace: String = "scheduler"
+}
+
+case class OneFrameFetcherConfig()

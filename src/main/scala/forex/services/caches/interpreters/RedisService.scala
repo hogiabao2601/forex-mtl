@@ -7,17 +7,17 @@ import cats.syntax.apply._
 import forex.services.caches.CacheService
 import forex.services.rates.RateResponse
 import forex.services.rates.RateResponse._
-import net.spy.memcached.MemcachedClient
-import scalacache.memcached.MemcachedCache
+import redis.clients.jedis.JedisPool
+import scalacache.redis.RedisCache
 import scalacache.serialization.circe._
 import scalacache.{ get, put, Cache, Mode }
 
 import scala.concurrent.duration.DurationInt
 
-class MemcachedService[F[_]: CatsAsync](client: MemcachedClient, conf: forex.config.CacheConfig)
-    extends CacheService[F] {
-  implicit val mode: Mode[F]                          = scalacache.CatsEffect.modes.async[F]
-  implicit val rateResponseCache: Cache[RateResponse] = MemcachedCache[RateResponse](client)
+class RedisService[F[_]: CatsAsync](pool: JedisPool, conf: forex.config.CacheConfig) extends CacheService[F] {
+  implicit val mode: Mode[F] = scalacache.CatsEffect.modes.async[F]
+
+  implicit val rateResponseCache: Cache[RateResponse] = RedisCache(pool)
 
   override def getRate(key: String): F[Option[RateResponse]] =
     if (conf.enable) {
@@ -28,7 +28,8 @@ class MemcachedService[F[_]: CatsAsync](client: MemcachedClient, conf: forex.con
 
   override def putRate(key: String, response: RateResponse): F[RateResponse] =
     if (conf.enable) {
-      put(key)(response, conf.ttl.seconds.some) *> response.pure[F]
+      put(key)(response, conf.ttl.seconds.some) *>
+        response.pure[F]
     } else {
       response.pure[F]
     }

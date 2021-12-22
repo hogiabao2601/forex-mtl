@@ -23,10 +23,9 @@ trait KeyBuilder {
     val day               = zdt.getDayOfMonth
     val hour              = zdt.getHour
     val minute            = fiveMinutes * (zdt.getMinute / fiveMinutes)
-    val time              = s"$year-$month-$day-$hour-$minute"
-    List(time, pair.from.show, pair.to.show).mkString("::")
+    List(year, month, day, hour, minute, pair.from.show, pair.to.show).mkString("::")
   }
 
 }
 
-object KeyBuilderOps extends KeyBuilder {}
+object KeyBuilderOps extends KeyBuilder

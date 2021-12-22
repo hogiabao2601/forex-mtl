@@ -13,8 +13,6 @@ object errors {
 
   def toProgramError(error: RatesServiceError): Error = error match {
     case RatesServiceError.OneFrameLookupFailed(msg) => Error.RateLookupFailed(msg)
-    case RatesServiceError.WrongUri(msg)             => Error.RateLookupFailed(msg)
-    case RatesServiceError.ParseError(msg)           => Error.RateLookupFailed(msg)
     case RatesServiceError.EmptyResponse             => Error.RateLookupFailed("The one frame service response is empty")
   }
 }
